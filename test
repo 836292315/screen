@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="天地图" />
+    <title>天地图－地图API－范例－地图拾取器</title>
+    <script
+      type="text/javascript"
+      src="http://api.tianditu.gov.cn/api?v=4.0&tk=f9de95ad929f06841af35bae0ce64a4b"
+    ></script>
+    <style type="text/css">
+      body,
+      html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "Microsoft YaHei";
+      }
+      #mapDiv {
+        width: 80%;
+        height: 500px;
+      }
+      input,
+      b,
+      p {
+        margin-left: 5px;
+        font-size: 14px;
+      }
+    </style>
+    <script>
+      var map;
+      var zoom = 12;
+      function onLoad() {
+        map = new T.Map("mapDiv");
+        map.centerAndZoom(new T.LngLat(120.156672, 33.350937), zoom);
+        var points = [];
+        points.push(new T.LngLat(120.18459, 33.34544));
+        points.push(new T.LngLat(120.14339, 33.32336));
+        points.push(new T.LngLat(120.11833, 33.33913));
+        points.push(new T.LngLat(120.15301, 33.36294));
+        points.push(new T.LngLat(120.18459, 33.34544));
+        //创建线对象
+        var line = new T.Polyline(points, {
+          color: "red",
+          weight: 4,
+          // opacity: 0.5,
+          // lineStyle: "dashed",
+        });
+        //向地图上添加线
+        map.addOverLay(line);
+
+        var cp = new T.CoordinatePickup(map, { callback: getLngLat });
+        cp.addEvent();
+      }
+
+      function getLngLat(lnglat) {
+        document.getElementById("lnglatStr").value =
+          lnglat.lng.toFixed(6) + "," + lnglat.lat.toFixed(6);
+      }
+    </script>
+  </head>
+  <body onLoad="onLoad()">
+    <div id="mapDiv"></div>
+    <p>本示例演示如何在地图上用鼠标获得坐标。</p>
+    <div>
+      用鼠标在地图上点选获得地理坐标
+      <input type="text" id="lnglatStr" value="" />
+    </div>
+  </body>
+</html>
